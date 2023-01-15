@@ -1,100 +1,109 @@
 <template>
-  <header>
-    <div class="row" id="PreNav"></div>
-    <nav>
-      <a href="/" class="logo">
-        <img src="../../../assets/ranek.svg" alt="Ranek" />
-      </a>
-
-      <!-- <b-avatar v-if="this.$store.state.login == true" id="dropdown-1" text="Dropdown Button" class="m-md-2"> -->
-      <div id="search">
+  <div>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <a href="/" class="logo">
+          <img src="../../../assets/ranek.svg" alt="Ranek" />
+        </a>
+        <a href="/" class="logo2">
+          <img src="../../../assets/ranek2.svg" alt="Ranek" />
+        </a>
         <form @submit.prevent="form.post('/')" method="POST">
-          <input
-            name="busca"
-            id="busca"
-            class="form-control"
-            type="text"
-            v-model="form.search"
-            placeholder="Buscar..."
-          />
-         <button class="btn btn-link"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <div class="input-group">
+            <input
+              class="form-control form-control-sidebar"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              v-model="form.search"
+            />
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-sidebar">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
         </form>
-      </div>
-      <!-- dropdown -->
-      <div class="cart4">
-        <div
-          v-if="this.user"
-          
-        >
-          <ul class="navbar-nav ml-auto cart btn" @click="cart()">
-            <li class="nav-item">
-              <span href="nav-link">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="22"
-                  height="22"
-                  fill="currentColor"
-                  class="bi bi-cart"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
-                  />
-                </svg>
-              </span>
-              <span class="badge badge-danger">{{ total }}</span>
-            </li>
-          </ul>
-          <!-- <div class="dropdown">
-            <b-avatar
-              class=""
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-            </b-avatar>
+        <div class="d-flex">
+          <div class="nav-item dropdown" id="cart">
+            <a href="/cart" class="nav-link">
+              <img src="../../../assets/cart.svg" alt="Carrinho" />
+              <span class="badge badge-danger navbar-badge">{{ total }}</span>
+            </a>
+          </div>
 
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item"
-                  ><b>{{ this.user.name }}</b></a
-                >
-              </li>
-              <li><a class="dropdown-item" href="/wishlist" >Wishlist</a></li>
-              <li><a class="dropdown-item" @click="logout()">Sair</a></li>
-            </ul>
-          </div> -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasDarkNavbar"
+            aria-controls="offcanvasDarkNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
         </div>
-        <!--  end -->
-
-        <a v-else class="btn sidea" href="/login"
-          ><span class="login"><b>Cadastre-se / Login</b></span></a
+        <div
+          class="offcanvas offcanvas-end text-bg-dark"
+          tabindex="-1"
+          id="offcanvasDarkNavbar"
+          aria-labelledby="offcanvasDarkNavbarLabel"
         >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+              Menu
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login/Register</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Categorias
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </nav>
-    <div class="row" id="PosNav">
-      <ul class="nav justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">CATEGORIAS</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">MAIS VENDIDOS</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">PROMOÇÃO</a>
-        </li>
-      </ul>
-    </div>
-  </header>
+  </div>
 </template>
   
   <script>
 import axios from "axios";
+
 // import axios from 'axios';
 export default {
   name: "TheHeader",
-  computed: {},
+  components: {
+    // Sidebar,
+  },
   data() {
     return {
       // total: 0,
@@ -146,157 +155,59 @@ export default {
 </script>
   
   <style scoped>
- 
-  #search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 100%;
+@media (max-width: 500px) {
+  .logo {
+    display: none;
   }
-
-  .btn-link {
-    background: none;
-    border: none;
-    outline: none;
-    cursor: pointer;
+  .logo2 {
+    display: flex;
+  }
+  .logo2 img {
+    width: 60px;
+    height: 60px;
+  }
+  .input-group {
+    width: 200px;
+  }
+  .container-fluid {
     padding: 0;
-    margin: 0;
-    color: rgb(137, 107, 182);
   }
-
-  form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 30%;
+  #cart {
+    margin-right: 15px;
   }
-.resultados {
-  height: 600px;
 }
-
-#busca {
-  width: 100%;
-  height: 32px;
-  border: none;
-}
-
-
-
-@media screen and (max-width: 768px) {
-  .nav-item {
-    display: flex;
-    align-items: center;
-  }
-  .nav-link {
-    font-family: "industry", "arial", sans-serif;
-    font-size: 10px;
-    font-weight: 500;
-    color: rgb(137, 107, 182);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 0 5px;
-    transition: all 0.3s ease;
-  }
-  #PreNav {
-    background: rgb(137, 107, 182);
-    height: 3px;
-  }
-  #PosNav {
-    /* background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x !important; */
-    height: 50px;
-    box-shadow: 0 2px 4px rgba(30, 60, 90, 0.1);
+@media (min-width: 500px) {
+  .logo2 {
+    display: none;
   }
   .logo {
-    width: 60px;
+    padding: 10px 0;
   }
- .cart4 {
-    margin-right: -20px;
+
+  .logo img {
+    width: 90px;
   }
-  form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 70%;
+  .input-group {
+    width: 400px;
+  }
+  #cart {
+    margin-right: 15px;
   }
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-}
-.nav-link {
-  font-family: "industry", "arial", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  font-weight: bold;
-  color: rgb(137, 107, 182);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 0 15px;
-  transition: all 0.3s ease;
+.input-group-append {
+  background-color: #fff;
+  border-radius: 0 5px 5px 0;
 }
 #PreNav {
-  background: rgb(137, 107, 182);
+  background-color: #007bff;
   height: 3px;
 }
 #PosNav {
   /* background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x !important; */
   height: 50px;
   box-shadow: 0 2px 4px rgba(30, 60, 90, 0.1);
-}
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-  box-shadow: 0 2px 4px rgba(30, 60, 90, 0.1);
-}
-
-header {
-  background: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-}
-
-.logo {
-  padding: 10px 0;
-}
-
-.logo img {
-  width: 90px;
-}
-.cart {
-  margin-right: 14px;
-}
-.badge {
-  /* position: absolute; */
-  /* top: -14px; */
-  /* right: -10px; */
-  /* padding: 5px 10px; */
-  border-radius: 50%;
-  background: red;
-  color: #fff;
-  font-size: 0.7rem;
-}
-.login {
-  /* padding: 10px; */
-  font-family: Poppins, sans-serif !important;
-  border-radius: 4px;
-  text-decoration: none;
-}
-@media (max-width: 500px) {
-  .sidea {
-    margin-right: -20px;
-  }
+  background-color: #007bff;
 }
 </style>
   

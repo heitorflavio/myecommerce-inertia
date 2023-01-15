@@ -1,19 +1,5 @@
 <template>
-  <div>
-    <!-- <form @submit.prevent="form.post('/')" method="POST">
-      <input
-        name="busca"
-        id="busca"
-        type="text"
-        v-model="form.search"
-        placeholder="Buscar..."
-      />
-      <input
-        type="submit"
-        id="lupa"
-        value="Buscar"
-      />
-    </form> -->
+  <div id="list">
     <section class="produtos-container">
       <Loading v-if="retur" />
       <div id="products" v-else>
@@ -141,8 +127,6 @@ export default {
     //   // return `/produto?_limit=${this.produtosPorPagina}${query}`;
     //   return `/produtos`;
     // },
-
-   
   },
   methods: {
     currency(value) {
@@ -171,8 +155,7 @@ export default {
       // console.log(this.$axios);
     },
     buscarProdutos() {
-
-      form.post(route('/'));
+      form.post(route("/"));
     },
     Time(date) {
       setInterval(() => {
@@ -211,8 +194,16 @@ export default {
 </script>
   
   <style scoped>
-#products{
-  margin-top: 150px;
+#list {
+  margin-top: 100px;
+  /* height: 100vh; */
+  color: #345;
+  background-image: url("../../../assets/pattern.svg");
+  background-repeat: repeat;
+  background-size: 100%;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+
+
 }
 .content {
   display: flex;
@@ -369,45 +360,6 @@ p {
   height: 1rem;
   color: rgb(127, 133, 141);
   font-family: Poppins, sans-serif !important;
-}
-
-.sem-resultados {
-  text-align: center;
-  /* color: #af4c4c; */
-}
-form {
-  max-width: 600px;
-  margin: 30px auto 60px auto;
-  position: relative;
-  padding: 0 10px;
-}
-
-.resultados {
-  height: 600px;
-}
-
-#busca {
-  width: 100%;
-  padding: 20px;
-  border: none;
-}
-
-#busca:focus,
-#busca:hover {
-  transform: scale(0.4.0.4);
-}
-
-#lupa {
-  width: 62px;
-  height: 62px;
-  background: url("../../../assets/search.svg") no-repeat center center;
-  text-indent: -150px;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  box-shadow: none;
 }
 </style>
   

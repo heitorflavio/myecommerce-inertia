@@ -65,6 +65,7 @@ class ProductsController extends Controller
     {
         //
         return Inertia::render('Product', [
+            'user' => Auth::user(),
             'product' => \App\Models\Products::where('sku', $sku)->first(),
             'images' => \App\Models\ImagesProducts::where('product_sku', $sku)->get(),
         ]);

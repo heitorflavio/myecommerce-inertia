@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateCustomersRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class CustomersController extends Controller
 {
@@ -53,7 +54,7 @@ class CustomersController extends Controller
         // ]);
 
         $user = DB::table('users')->insert([
-            'name' => $request->name.' '.$request->lastname,
+            'name' => $request->name . ' ' . $request->lastname,
             'email' => $request->email,
             'email_verified_at' => null,
             'password' => $pass,
@@ -64,7 +65,7 @@ class CustomersController extends Controller
         ]);
 
         $customers = Customers::create([
-            'name' => $request->name.' '.$request->lastname,
+            'name' => $request->name . ' ' . $request->lastname,
             'email' => $request->email,
             'document' => $request->document,
             'phone' => $request->phone,
@@ -75,10 +76,10 @@ class CustomersController extends Controller
             'state' => $request->state,
             'zip' => $request->zip,
         ]);
-      
-        return  Inertia::render('Customer', [
-            'customers' => $customers,
-        ]);
+
+        
+       return Inertia::location('/login');
+        
     }
 
     /**

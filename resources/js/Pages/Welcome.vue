@@ -1,6 +1,7 @@
  <script setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import Navbar from '@/Components/Layout/Navbar.vue';
+import Footer from '@/Components/Layout/Footer.vue';
 import List from '@/Components/Home/List.vue';
 
 defineProps({
@@ -19,5 +20,6 @@ defineProps({
   <Head title="Myecommerce" />
   <Navbar :user="user" :total="0" />
   <List :products="products" />
+  <Footer />
 </template>
 

@@ -2,7 +2,7 @@
   <div>
     <div>
       <!-- <h1>{{product}}</h1> -->
-      <Navbar :total="total" />
+      <Navbar  :user="user" :total="total" />
       <Loading v-if="!product" />
       <section class="content">
         <div class="card card-solid">
@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import Navbar from "@/components/Layout/Navbar.vue";
+import Navbar from '@/Components/Layout/Navbar.vue';
 import Loading from "@/components/Layout/PaginaCarregando.vue";
 export default {
   components: {
@@ -128,7 +128,11 @@ export default {
       images: {
         type: Array,
         required: true,     
-      }
+    },
+      user: {
+        type: Object,
+        required: true,
+      },
     },
     data() {
       return {

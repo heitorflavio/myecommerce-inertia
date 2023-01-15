@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-gradient-primary wrappe" id="register">
+    <div class=" bg-dark wrappe" id="register">
       <div class="container" id="container">
         <div class="card shadow-lg o-hidden border-0 my-5">
           <div class="card-body p-0">

@@ -46,10 +46,20 @@ Route::post('/login', function (Request $request) {
 Route::get('/', [App\Http\Controllers\ProductsController::class, 'index']);
 Route::post('/', [App\Http\Controllers\ProductsController::class, 'search']);
 Route::get('/product/{sku}', [App\Http\Controllers\ProductsController::class, 'show']);
-Route::get('/login', function () { return Inertia::render('Login');});
-Route::get('/cart', function () {  return Inertia::render('Cart');})->middleware('auth');
+Route::get('/cart', function () { return Inertia::render('Cart');});
 Route::get('/register', function () {return Inertia::render('Register');});
 Route::post('/register', [App\Http\Controllers\CustomersController::class, 'store']);
+Route::get('/login', function () { return Inertia::render('Login');});
+Route::post('/login', function (Request $request) {
+    $credentials = ['email' => $request->email, 'password' => $request->password];
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return Inertia::location('/');
+    }
+    return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+    ]);
+});
 
 
 // Painel
