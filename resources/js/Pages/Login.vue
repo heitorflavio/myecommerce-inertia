@@ -124,6 +124,7 @@ export default {
       form: Inertia.form({
         email: "",
         password: "",
+        cart: "",
       }),
     };
   },
@@ -146,12 +147,20 @@ export default {
       console.log(val);
     },
   },
+  methods: {
+    cartCheck() {
+      if(localStorage.getItem('_cart') != null){
+        this.form.cart = localStorage.getItem('_cart');
+      }
+    }
+  },
   created() {
+    this.cartCheck();
     // this.submit();
     // console.log(this.login);
-    axios.get("/cart").then((response) => {
-      console.log(response);
-    });
+    // axios.get("/cart").then((response) => {
+    //   console.log(response);
+    // });
   },
 };
 </script>

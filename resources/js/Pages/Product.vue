@@ -5,12 +5,12 @@
       <Navbar  :user="user" :total="total" />
       <Loading v-if="!product" />
       <section class="content">
+        <div class="alerta" :class="{ ativo: alertaAtivo }">
+          <p :class="CSStext">{{ msg }}</p>
+        </div>
         <div class="card card-solid">
           <div class="card-body">
             <!--  -->
-            <div class="alerta" :class="{ ativo: alertaAtivo }">
-              <p :class="CSStext">{{ msg }}</p>
-            </div>
             <!--  -->
             <div class="row">
               <div class="col-12 col-sm-6">
@@ -108,17 +108,20 @@
           </div>
         </div>
       </section>
+      <Footer id="footer" />
     </div>
   </div>
 </template>
 
 <script>
 import Navbar from '@/Components/Layout/Navbar.vue';
+import Footer from '@/Components/Layout/Footer.vue';
 import Loading from "@/components/Layout/PaginaCarregando.vue";
 export default {
   components: {
     Navbar,
     Loading,
+    Footer,
   },
   props: {
     product: {
@@ -142,6 +145,24 @@ export default {
         CSStext: "",
         total: 0,
       };
+  },
+  methods: {
+      addCart: function () {
+        axios.post("/cart", {
+          product_id: this.product.id,
+          quantity: 1,
+        }).then((response) => {
+          this.alertaAtivo = true;
+          this.msg = "Produto adicionado ao carrinho";
+          this.CSStext = "alert alert-success";
+          this.total = response.data.total;
+          this.$emit("updateCart", this.total);
+        }).catch((error) => {
+          this.alertaAtivo = true;
+          this.msg = "Erro ao adicionar ao carrinho";
+          this.CSStext = "alert alert-danger";
+        });
+      },
     },
   created() {
     // console.log(this.product)
@@ -160,11 +181,7 @@ export default {
 .svgdes {
 }
 
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+
 .description {
   display: flex;
   flex-direction: row;
@@ -177,6 +194,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 100px;
 }
 .price {
   font-size: 2rem;
@@ -218,6 +236,16 @@ export default {
     align-items: center;
     margin-bottom: 40px;
   }
+  .product-image {
+  width: 100%px;
+  object-fit: cover;
+}
+}
+@media (min-width: 500px){
+  .product-image {
+  width: 500px;
+  object-fit: cover;
+}
 }
 /* ALERTA */
 
@@ -275,5 +303,13 @@ export default {
     width: 120px;
     height: 120px;
     object-fit: cover;
+}
+#footer{
+    
+    position:absolute;
+   bottom:0;
+   width:100%;
+  
+
 }
 </style>

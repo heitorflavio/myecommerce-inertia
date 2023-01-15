@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carts;
 use App\Http\Requests\StoreCartsRequest;
 use App\Http\Requests\UpdateCartsRequest;
+use Illuminate\Http\Request;
 
 class CartsController extends Controller
 {
@@ -13,10 +14,22 @@ class CartsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $carts = Carts::where('hash', $request->hash)->get();
+        // return response()->json($carts, 200);
+        if($carts->count() > 0) {
+            return response()->json($carts, 200);
+        }else{
+           $carts = Carts::create([
+                'hash' => $request->hash,
+                'status' => 1
+            ]);
+            return response()->json($carts, 200);
+        }
     }
+
+
 
     /**
      * Show the form for creating a new resource.

@@ -20,6 +20,7 @@ class Customers extends Model
         'city',
         'state',
         'zip',
+        'cart'
     ];
      
 }

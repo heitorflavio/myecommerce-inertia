@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\Rules\Role;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,13 +47,20 @@ Route::post('/login', function (Request $request) {
 Route::get('/', [App\Http\Controllers\ProductsController::class, 'index']);
 Route::post('/', [App\Http\Controllers\ProductsController::class, 'search']);
 Route::get('/product/{sku}', [App\Http\Controllers\ProductsController::class, 'show']);
-Route::get('/cart', function () { return Inertia::render('Cart');});
-Route::get('/register', function () {return Inertia::render('Register');});
+Route::get('/register', function () {
+    return Inertia::render('Register');
+});
 Route::post('/register', [App\Http\Controllers\CustomersController::class, 'store']);
-Route::get('/login', function () { return Inertia::render('Login');});
+Route::get('/login', function () {
+    return Inertia::render('Login');
+});
 Route::post('/login', function (Request $request) {
     $credentials = ['email' => $request->email, 'password' => $request->password];
     if (Auth::attempt($credentials)) {
+        $userCheck = DB::table('customers')->where('email', $request->email)->first();
+        if ($userCheck != null) {
+            $userCheck = DB::table('customers')->where('email', $request->email)->update(['cart' => request()->cart]);
+        }
         $request->session()->regenerate();
         return Inertia::location('/');
     }
@@ -60,10 +68,17 @@ Route::post('/login', function (Request $request) {
         'email' => 'The provided credentials do not match our records.',
     ]);
 });
+Route::get('/cart', function () {
+    return Inertia::render('Cart');
+});
+Route::post('/cart', [App\Http\Controllers\CartsController::class, 'store']);
+Route::post('/cart/check', [App\Http\Controllers\CartsController::class, 'index']);
 
 
 // Painel
-Route::get('/painel/login', function () {return Inertia::render('PainelLogin');});
+Route::get('/painel/login', function () {
+    return Inertia::render('PainelLogin');
+});
 Route::post('/painel/login', function () {
     $credentials = ['email' => request()->email, 'password' => request()->password];
     if (Auth::attempt($credentials)) {
@@ -75,9 +90,15 @@ Route::post('/painel/login', function () {
     ]);
 });
 Route::middleware('adm')->group(function () {
-    Route::get('/painel', function () {return Inertia::render('Painel');});
-    Route::get('/painel/products', function(){ return Inertia::render('PainelProducts',['products' => \App\Models\Products::all(),'user' => Auth::user(),]);});
-    Route::get('/painel/orders', function(){ return Inertia::render('PainelOrders',['orders' => \App\Models\Orders::all(),'user' => Auth::user(),]);});
+    Route::get('/painel', function () {
+        return Inertia::render('Painel');
+    });
+    Route::get('/painel/products', function () {
+        return Inertia::render('PainelProducts', ['products' => \App\Models\Products::all(), 'user' => Auth::user(),]);
+    });
+    Route::get('/painel/orders', function () {
+        return Inertia::render('PainelOrders', ['orders' => \App\Models\Orders::all(), 'user' => Auth::user(),]);
+    });
 });
 
 // Route::post('/', function (Request $request) {

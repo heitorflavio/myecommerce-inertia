@@ -38,7 +38,7 @@
 
                   <button v-if="!produto.onSale" class="button">COMPRAR</button>
                   <div class="content" v-else>
-                    <span class="dsvg">
+                    <span class="dsvg d-flex">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -71,7 +71,7 @@
             <!-- <ProdutosPaginar :produtosTotal="produtosTotal" :produtosPorPagina="produtosPorPagina"/> -->
           </div>
           <div
-            v-else-if="produtos && produtos.length === 0"
+            v-else
             key="sem-resultados"
             class="resultados"
           >
@@ -195,29 +195,21 @@ export default {
   
   <style scoped>
 #list {
-  margin-top: 100px;
-  /* height: 100vh; */
   color: #345;
   background-image: url("../../../assets/pattern.svg");
   background-repeat: repeat;
   background-size: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
-
-
 }
 .content {
   display: flex;
   flex-wrap: nowrap;
-  /* justify-content: center;
-    align-items: center; */
-  /* margin: 0 auto; */
   width: 100%;
   max-width: 1200px;
-  /* padding: 0 20px; */
   border: 1px solid #af4c4c;
 }
 .dsvg {
-  background-color: #af4c4c; /* Green */
+  background-color: #af4c4c;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -307,9 +299,7 @@ p {
     grid-gap: 10px;
     margin: 20px;
   }
-  .resultados {
-    height: 200px;
-  }
+ 
 }
 
 .produto {
@@ -361,5 +351,10 @@ p {
   color: rgb(127, 133, 141);
   font-family: Poppins, sans-serif !important;
 }
+.resultados {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
 </style>
   
