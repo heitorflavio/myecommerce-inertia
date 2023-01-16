@@ -147,26 +147,36 @@ export default {
       };
   },
   methods: {
-      addCart: function () {
-        axios.post("/cart", {
+    addCart: function () {
+      let cartId = sessionStorage.getItem("cart");
+      cartId = window.atob(cartId);
+        axios.post("/cart/new", {
           product_id: this.product.id,
+          cart_id: cartId,
+          description: this.product.description,
+          price: this.product.price,
+          sku: this.product.sku,
+          image: this.product.image,
+          status: 1,
           quantity: 1,
         }).then((response) => {
           this.alertaAtivo = true;
           this.msg = "Produto adicionado ao carrinho";
           this.CSStext = "alert alert-success";
-          this.total = response.data.total;
-          this.$emit("updateCart", this.total);
+
+          console.log(response.data)
+        
+          // this.$emit("updateCart  this.total = response.data.total;", this.total);
         }).catch((error) => {
+          console.log(error.response.data)
           this.alertaAtivo = true;
           this.msg = "Erro ao adicionar ao carrinho";
           this.CSStext = "alert alert-danger";
         });
-      },
+    },
     },
   created() {
-    // console.log(this.product)
-    console.log(this.images)
+   
   },
 };
 </script>

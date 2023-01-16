@@ -19,7 +19,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        
         return Inertia::render('Welcome', [
             'user' => Auth::user(),
             'products' => Products::all(),

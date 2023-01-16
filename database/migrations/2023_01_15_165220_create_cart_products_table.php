@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained();
             // $table->integer('product_id');
             // $table->integer('customer_id');
-            $table->string('description');
+            $table->longText('description');
             $table->string('sku');
             $table->integer('quantity');
             $table->float('price');

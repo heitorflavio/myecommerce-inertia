@@ -16,9 +16,9 @@ class CartsController extends Controller
      */
     public function index(Request $request)
     {
-        $carts = Carts::where('hash', $request->hash)->get();
+        $carts = Carts::where('hash', $request->hash)->first();
         // return response()->json($carts, 200);
-        if($carts->count() > 0) {
+        if($carts != null) {
             return response()->json($carts, 200);
         }else{
            $carts = Carts::create([

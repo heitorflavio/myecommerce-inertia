@@ -73,6 +73,8 @@ Route::get('/cart', function () {
 });
 Route::post('/cart', [App\Http\Controllers\CartsController::class, 'store']);
 Route::post('/cart/check', [App\Http\Controllers\CartsController::class, 'index']);
+Route::post('/cart/new', [App\Http\Controllers\CartProductsController ::class, 'store']);
+Route::post('/cart/products', [App\Http\Controllers\CartProductsController ::class, 'show']);
 
 
 // Painel
