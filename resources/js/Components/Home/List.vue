@@ -91,7 +91,7 @@
 import axios from "axios";
 // import { api } from "@/services/index.js";
 // import Buscar from "@/components/Produtos/ProdutosBuscar.vue";
-import Loading from "@/components/Layout/PaginaCarregando.vue";
+import Loading from "@/components/Layout/LoadingTime.vue";
 // import Footer from "@/components/Layout/Footer.vue";
 export default {
   name: "ProdutosLista",

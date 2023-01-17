@@ -28,7 +28,7 @@
           <div class="nav-item dropdown" id="cart">
             <a href="/cart" class="nav-link">
               <img src="../../../assets/cart.svg" alt="Carrinho" />
-              <span class="badge badge-danger navbar-badge">{{ total }}</span>
+              <span class="badge badge-danger navbar-badge">{{ Total }}</span>
             </a>
           </div>
 
@@ -113,16 +113,29 @@ export default {
       form: this.$inertia.form({
         search: "",
       }),
+      Total: 0,
     };
   },
 
-  props: {
-    total: Number,
-    user: String,
-  },
+  // props: {
+  //   total: Number,
+  //   user: String,
+  // },
   methods: {
     cart() {
-      this.$router.push("/cart");
+      let id = window.atob(sessionStorage.getItem("cart"));
+      console.log(id);
+      axios
+        .post("/cart/products", {
+          cart_id: id,
+        })
+        .then((response) => {
+          this.Total = response.data.length;
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     me() {
       axios
@@ -149,8 +162,14 @@ export default {
   },
   mounted() {
     // this.me();
-    console.log(this.user);
+    this.cart();
+    // console.log(this.user);
   },
+  watch: {
+    Total(n) {
+      this.Total = n
+  }
+}
 };
 </script>
   

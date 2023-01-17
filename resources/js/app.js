@@ -13,7 +13,6 @@ import 'admin-lte/dist/js/adminlte.min.js';
 
 
 
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({

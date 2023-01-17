@@ -27,6 +27,11 @@ return new class extends Migration
             $table->date('onSaleDate')->nullable();
             $table->float('onSalePrice')->nullable();
             $table->integer('status')->default(1);
+            $table->float('weight')->nullable();
+            $table->float('height')->nullable();
+            $table->float('length')->nullable();
+            $table->float('width')->nullable();
+            $table->float('insurance_value')->nullable();
             $table->timestamps();
         });
     }

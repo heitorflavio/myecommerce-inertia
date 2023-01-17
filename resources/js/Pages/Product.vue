@@ -2,122 +2,290 @@
   <div>
     <div>
       <!-- <h1>{{product}}</h1> -->
-      <Navbar  :user="user" :total="total" />
+      <Navbar :user="user" />
       <Loading v-if="!product" />
-      <section class="content">
-        <div class="alerta" :class="{ ativo: alertaAtivo }">
-          <p :class="CSStext">{{ msg }}</p>
-        </div>
-        <div class="card card-solid">
-          <div class="card-body">
-            <!--  -->
-            <!--  -->
-            <div class="row">
-              <div class="col-12 col-sm-6">
-                 <h3 class="d-inline-block d-sm-none">
-                {{ product.name }}
-              </h3> 
-                 <div class="col-12">
-                  <img
-                    v-if="images.length > 0"
-                    :src="images[current].path"
-                    class="product-image"
-                    alt="Product Image"
-                  />
-                  <img
-                    v-else
-                    :src="product.image"
-                    class="product-image"
-                    alt="Product Image"
-                  />
-                </div>
+      <div id="product">
+        <section class="py-5">
+          <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+              <div class="col-md-6">
+                <img
+                  class="card-img-top mb-5 mb-md-0"
+                  :src="product.image"
+                  alt="..."
+                />
                 <div class="col-12 product-image-thumbs">
-                  <div
-                    v-for="(image, index) in images"
-                    :key="index"
-                  >
-                    <img @click="current = index" :src="image.path" class="img-thumb" />
+                  <div v-for="(image, index) in images" :key="index">
+                    <img
+                      @click="current = index"
+                      :src="image.path"
+                      class="img-thumb"
+                    />
                   </div>
-                </div> 
+                </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <h3 class="my-3">
-                  {{ product.name }}
-                </h3>
-                <p>
-                  {{ product.description }}
-                </p>
-                <hr />
-                <div v-if="!product.onSale" class="py-2 px-3 mt-4">
-                  <h2 class="mb-0 price">{{ product.price }}</h2>
-                  <span class="prices"> à vista</span>
-                </div>
-                <div v-else class="py-2 px-3 mt-4">
-                  <span class="Salesprice"
-                    ><s>{{ product.onSalePrice }}</s></span
+              <div class="col-md-6">
+                <div class="small mb-1">SKU: {{ product.sku }}</div>
+                <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
+                <div class="fs-5 mb-5">
+                  <span
+                    class="text-decoration-line-through"
+                    v-if="product.onSale == true"
+                    >{{ maskPrice(product.onSalePrice) }}</span
                   >
-                  <h2 class="mb-0 price">{{ product.price }}</h2>
-                  <span class="prices"> à vista</span>
+                  <span class="ml-2">{{ maskPrice(product.price) }}</span>
                 </div>
-                <div class="mt-4">
-                  <div
-                    class="btn btn-primary btn-lg btn-flat"
+                <p class="lead">{{ product.description }}</p>
+                <div class="d-flex">
+                  <!-- <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem"> -->
+                  <button
+                    class="btn btn-outline-dark flex-shrink-0"
+                    type="button"
                     @click="addCart()"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-cart-plus mr2"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"
-                      />
-                      <path
-                        d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
-                      />
-                    </svg>
-                    Add to Cart
-                  </div>
+                    <i class="bi-cart-fill me-1"></i>
+                    Add to cart
+                  </button>
                   <button
+                    class="btn btn-outline-danger flex-shrink-0"
                     type="button"
-                    class="btn btn-outline-danger btn-lg btn-flat"
-                    @click="addWish()"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-heart-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-                      ></path>
-                    </svg>
+                    <i class="bi-cart-fill me-1"></i>
                     Add to Wishlist
                   </button>
                 </div>
+                <div class="w-50 mt-4">
+                  <div class="d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="cep"
+                      v-mask="'#####-###'"
+                      placeholder="Calcular frete"
+                    />
+                    <button
+                      class="btn btn-outline-dark flex-shrink-0"
+                      @click="getFrete()"
+                    >
+                      Consultar
+                    </button>
+                  </div>
+                </div>
+                <div v-if="fretes.length > 0" class="frete mt-4">
+                  <div v-for="frete in fretes" :key="frete.id">
+                    <div class="">
+                      <img
+                        :src="frete.company.picture"
+                        alt="imagem frete"
+                        id="imageFrete"
+                      />
+                      <!-- <input
+                        type="radio"
+                        :id="frete.id"
+                        name="radioFrete"
+                        @click="addFrete(frete)"
+                      /> -->
+                      <label for=""
+                        >{{ frete.name }} - {{ maskPrice(frete.price) }}</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <span v-if="alertFrete">Frete indisponível</span>
               </div>
             </div>
-            <div class="row mt-4"></div>
           </div>
-        </div>
-      </section>
+        </section>
+        <section class="py-5 bg-light">
+          <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Related products</h2>
+            <div
+              class="
+                row
+                gx-4 gx-lg-5
+                row-cols-2 row-cols-md-3 row-cols-xl-4
+                justify-content-center
+              "
+            >
+              <div class="col mb-5">
+                <div class="card h-100">
+                  <!-- Product image-->
+                  <img
+                    class="card-img-top"
+                    src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                    alt="..."
+                  />
+                  <!-- Product details-->
+                  <div class="card-body p-4">
+                    <div class="text-center">
+                      <!-- Product name-->
+                      <h5 class="fw-bolder">Fancy Product</h5>
+                      <!-- Product price-->
+                      $40.00 - $80.00
+                    </div>
+                  </div>
+                  <!-- Product actions-->
+                  <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                      <a class="btn btn-outline-dark mt-auto" href="#"
+                        >View options</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col mb-5">
+                <div class="card h-100">
+                  <!-- Sale badge-->
+                  <div
+                    class="badge bg-dark text-white position-absolute"
+                    style="top: 0.5rem; right: 0.5rem"
+                  >
+                    Sale
+                  </div>
+                  <!-- Product image-->
+                  <img
+                    class="card-img-top"
+                    src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                    alt="..."
+                  />
+                  <!-- Product details-->
+                  <div class="card-body p-4">
+                    <div class="text-center">
+                      <!-- Product name-->
+                      <h5 class="fw-bolder">Special Item</h5>
+                      <!-- Product reviews-->
+                      <div
+                        class="
+                          d-flex
+                          justify-content-center
+                          small
+                          text-warning
+                          mb-2
+                        "
+                      >
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                      </div>
+                      <!-- Product price-->
+                      <span class="text-muted text-decoration-line-through"
+                        >$20.00</span
+                      >
+                      $18.00
+                    </div>
+                  </div>
+                  <!-- Product actions-->
+                  <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                      <a class="btn btn-outline-dark mt-auto" href="#"
+                        >Add to cart</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col mb-5">
+                <div class="card h-100">
+                  <!-- Sale badge-->
+                  <div
+                    class="badge bg-dark text-white position-absolute"
+                    style="top: 0.5rem; right: 0.5rem"
+                  >
+                    Sale
+                  </div>
+                  <!-- Product image-->
+                  <img
+                    class="card-img-top"
+                    src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                    alt="..."
+                  />
+                  <!-- Product details-->
+                  <div class="card-body p-4">
+                    <div class="text-center">
+                      <!-- Product name-->
+                      <h5 class="fw-bolder">Sale Item</h5>
+                      <!-- Product price-->
+                      <span class="text-muted text-decoration-line-through"
+                        >$50.00</span
+                      >
+                      $25.00
+                    </div>
+                  </div>
+                  <!-- Product actions-->
+                  <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                      <a class="btn btn-outline-dark mt-auto" href="#"
+                        >Add to cart</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col mb-5">
+                <div class="card h-100">
+                  <!-- Product image-->
+                  <img
+                    class="card-img-top"
+                    src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                    alt="..."
+                  />
+                  <!-- Product details-->
+                  <div class="card-body p-4">
+                    <div class="text-center">
+                      <!-- Product name-->
+                      <h5 class="fw-bolder">Popular Item</h5>
+                      <!-- Product reviews-->
+                      <div
+                        class="
+                          d-flex
+                          justify-content-center
+                          small
+                          text-warning
+                          mb-2
+                        "
+                      >
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                        <div class="bi-star-fill"></div>
+                      </div>
+                      <!-- Product price-->
+                      $40.00
+                    </div>
+                  </div>
+                  <!-- Product actions-->
+                  <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                      <a class="btn btn-outline-dark mt-auto" href="#"
+                        >Add to cart</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
       <Footer id="footer" />
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from '@/Components/Layout/Navbar.vue';
-import Footer from '@/Components/Layout/Footer.vue';
-import Loading from "@/components/Layout/PaginaCarregando.vue";
+import Navbar from "@/Components/Layout/Navbar.vue";
+import Footer from "@/Components/Layout/Footer.vue";
+import Mask from "../Plugin/MaskPrice.js";
+import Loading from "@/components/Layout/LoadingTime.vue";
+import {mask} from 'vue-the-mask'
 export default {
+  directives: {
+    mask
+  },
   components: {
     Navbar,
     Loading,
@@ -127,30 +295,73 @@ export default {
     product: {
       type: Object,
       required: true,
-      },
-      images: {
-        type: Array,
-        required: true,     
     },
-      user: {
-        type: Object,
-        required: true,
-      },
+    images: {
+      type: Array,
+      required: true,
     },
-    data() {
-      return {
-        current: 0,
-        alertaAtivo: false,
-        msg: "",
-        CSStext: "",
-        total: 0,
-      };
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      current: 0,
+      alertaAtivo: false,
+      msg: "",
+      CSStext: "",
+      total: 0,
+      cep: "",
+      fretes: [],
+      alertFrete: false,
+    };
   },
   methods: {
+    refreshFrete(array) {
+      let r = [];
+      array.forEach((element) => {
+        if (element.price != null) {
+          this.alertFrete = true;
+        }
+      });
+      if()
+      return r;
+    },
+    getFrete() {
+      this.fretes = [];
+      let products = {
+        id: this.product.id,
+        width: this.product.width,
+        height: this.product.height,
+        length: this.product.length,
+        weight: this.product.weight,
+        quantity: 1,
+        insurance_value: this.product.insurance_value,
+
+      }
+      
+      axios
+        .post("/product/frete", {
+          cep: this.cep,
+          products: products,
+        })
+        .then((response) => {
+          this.fretes = this.refreshFrete(JSON.parse(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    maskPrice(price) {
+      price = parseInt(price);
+      return Mask.price(price);
+    },
     addCart: function () {
       let cartId = sessionStorage.getItem("cart");
       cartId = window.atob(cartId);
-        axios.post("/cart/new", {
+      axios
+        .post("/cart/new", {
           product_id: this.product.id,
           cart_id: cartId,
           description: this.product.description,
@@ -159,103 +370,56 @@ export default {
           image: this.product.image,
           status: 1,
           quantity: 1,
-        }).then((response) => {
+          width: this.product.width,
+          height: this.product.height,
+          weight: this.product.weight,
+          length: this.product.length,
+          insurance_value: this.product.insurance_value,
+        })
+        .then((response) => {
           this.alertaAtivo = true;
           this.msg = "Produto adicionado ao carrinho";
           this.CSStext = "alert alert-success";
 
-          console.log(response.data)
-        
+          console.log(response.data);
+
           // this.$emit("updateCart  this.total = response.data.total;", this.total);
-        }).catch((error) => {
-          console.log(error.response.data)
+        })
+        .catch((error) => {
+          console.log(error.response.data);
           this.alertaAtivo = true;
           this.msg = "Erro ao adicionar ao carrinho";
           this.CSStext = "alert alert-danger";
         });
     },
-    },
-  created() {
-   
   },
+  watch: {
+    // fretes(n) {
+    //   this.fretes 
+    // },
+  },
+  created() {},
 };
 </script>
 
 <style scoped>
-.textdescription {
-  font-size: 1.2rem;
-  color: #000;
-  margin-top: 14px;
-  margin-left: 10px;
+#imageFrete{
+  width: 60px
 }
-.svgdes {
+.frete {
+  display: grid;
+  grid-template-columns: 1fr 1fr ;
+  align-items: center;
+  
+}
+#product {
+  /* height: 100vh; */
+  display: flex;
+  flex-direction: column;
 }
 
-
-.description {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-.content {
-  padding: 20px 40px 20px 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-}
-.price {
-  font-size: 2rem;
-  color: rgb(255, 101, 0);
-}
-.Salesprice {
-  line-height: 1.5rem;
-  font-size: 0.9rem;
-  color: rgb(127, 133, 141);
-  font-family: Poppins, sans-serif !important;
-}
-.prices {
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  color: rgb(86, 92, 105);
-  font-family: Poppins, sans-serif !important;
-}
-@media screen and (max-width: 768px) {
-  .content {
-    flex-direction: column;
-    padding: 0;
-  }
-  .price {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .prices {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-left: 5px;
-  }
-  .mt-4 {
-    margin-top: 0.5rem !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 40px;
-  }
-  .product-image {
-  width: 100%px;
-  object-fit: cover;
-}
-}
-@media (min-width: 500px){
-  .product-image {
-  width: 500px;
-  object-fit: cover;
-}
+button {
+  margin: 2px;
 }
 /* ALERTA */
 
@@ -310,16 +474,13 @@ export default {
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 .img-thumb {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
 }
-#footer{
-    
-    position:absolute;
-   bottom:0;
-   width:100%;
-  
-
+#footer {
+  /* position: absolute;
+  bottom: 0;
+  width: 100%; */
 }
 </style>

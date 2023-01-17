@@ -38,12 +38,12 @@ class CartProductsController extends Controller
     public function store(StoreCartProductsRequest $request)
     {
         //
-        $check = CartProducts::where('cart_id', $request->cart_id)->where('product_id', $request->product_id)->first();
-        if($check != null) {
+        $check = CartProducts::where('cart_id', $request->cart_id)->where('product_id', $request->product_id)->where('status', 1)->first();
+        if ($check != null) {
             $check->quantity = $check->quantity + $request->quantity;
             $check->save();
             return response()->json($check, 201);
-        }else{
+        } else {
             $product = CartProducts::create($request->all());
             return response()->json($product, 201);
         }
@@ -58,9 +58,8 @@ class CartProductsController extends Controller
     public function show(Request $request)
     {
         //
-        $cartProducts = CartProducts::where('cart_id', $request->cart_id)->get();
+        $cartProducts = CartProducts::where('cart_id', $request->cart_id)->where('status', 1)->get();
         return response()->json($cartProducts, 200);
-;
     }
 
     /**
@@ -81,9 +80,26 @@ class CartProductsController extends Controller
      * @param  \App\Models\CartProducts  $cartProducts
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCartProductsRequest $request, CartProducts $cartProducts)
+    public function update(Request $request)
     {
-        //
+        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->first();
+        $newQuantity = $check->quantity + 1;
+        $check->update(['quantity' => $newQuantity]);
+        return response()->json($check, 201);
+    }
+     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateCartProductsRequest  $request
+     * @param  \App\Models\CartProducts  $cartProducts
+     * @return \Illuminate\Http\Response
+     */
+    public function remove(Request $request)
+    {
+        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->first();
+        $newQuantity = $check->quantity - 1;
+        $check->update(['quantity' => $newQuantity]);
+        return response()->json($check, 201);
     }
 
     /**
@@ -92,8 +108,10 @@ class CartProductsController extends Controller
      * @param  \App\Models\CartProducts  $cartProducts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CartProducts $cartProducts)
+    public function destroy(Request $request)
     {
-        //
+        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->first();
+        $check->update(['status' => 0]);
+        return response()->json($check, 201);
     }
 }

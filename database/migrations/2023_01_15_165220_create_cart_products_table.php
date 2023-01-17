@@ -25,6 +25,11 @@ return new class extends Migration
             $table->float('price');
             $table->string('image');
             $table->integer('status')->default(1)->comment('1 = active, 0 = inactive, 2 = sold'); 
+            $table->float('weight')->nullable();
+            $table->float('height')->nullable();
+            $table->float('width')->nullable();
+            $table->float('length')->nullable();
+            $table->float('insurance_value')->nullable();
             $table->timestamps();
         });
     }

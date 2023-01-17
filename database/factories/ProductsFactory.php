@@ -28,6 +28,11 @@ class ProductsFactory extends Factory
             'onSalePrice' => $this->faker->randomFloat(2, 1, 100),
             'onSale' => $this->faker->numberBetween(0, 1),
             'onSaleDate' => $this->faker->dateTime('2022-12-31', 'Europe/Lisbon'),
+            'weight' => $this->faker->randomFloat(2, 1, 100),
+            'height' => $this->faker->randomFloat(2, 1, 100),
+            'length' => $this->faker->randomFloat(2, 1, 100), // 'length' => 'height
+            'width' => $this->faker->randomFloat(2, 1, 100),
+           'insurance_value' => $this->faker->randomFloat(2, 1, 100),
             
         ];
     }

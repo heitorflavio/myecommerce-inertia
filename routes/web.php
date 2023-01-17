@@ -71,10 +71,21 @@ Route::post('/login', function (Request $request) {
 Route::get('/cart', function () {
     return Inertia::render('Cart');
 });
+
+// Cart
 Route::post('/cart', [App\Http\Controllers\CartsController::class, 'store']);
 Route::post('/cart/check', [App\Http\Controllers\CartsController::class, 'index']);
 Route::post('/cart/new', [App\Http\Controllers\CartProductsController ::class, 'store']);
 Route::post('/cart/products', [App\Http\Controllers\CartProductsController ::class, 'show']);
+Route::post('/cart/add', [App\Http\Controllers\CartProductsController ::class, 'update']);
+Route::post('/cart/remove', [App\Http\Controllers\CartProductsController ::class, 'remove']);
+Route::post('/cart/destroy', [App\Http\Controllers\CartProductsController ::class, 'destroy']);
+
+// Frete
+Route::post('/cart/frete', [App\Http\Controllers\MelhorEnvioController::class, 'show']);
+Route::post('/product/frete', [App\Http\Controllers\MelhorEnvioController::class, 'product']);
+
+
 
 
 // Painel

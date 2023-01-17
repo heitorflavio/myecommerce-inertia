@@ -17,6 +17,11 @@ class CartProducts extends Model
         'sku',
         'price',
         'image',
-        'status'
+        'status',
+        'weight',
+        'length',
+        'height',
+        'width',
+        'insurance_value',
     ];
 }

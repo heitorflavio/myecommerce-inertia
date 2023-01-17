@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
                 ProductsSeeder::class,
                 ImagesProductsSeeder::class,
                 CustomersSeeder::class,
+                MelhorEnvioSeeder::class
         
             ]);
        

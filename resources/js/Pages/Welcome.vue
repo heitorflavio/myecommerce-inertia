@@ -22,7 +22,7 @@ defineProps({
 <template>
   <div id="app">
     <Head title="Myecommerce" />
-    <Navbar :user="user" :total="0" />
+    <Navbar :user="user" />
     <List id="List" :products="products" />
     <Footer id="footer" />
   </div>
