@@ -88,7 +88,10 @@ Route::post('/product/frete', [App\Http\Controllers\MelhorEnvioController::class
 // Pedidos
 Route::post('/order', [App\Http\Controllers\OrdersController::class, 'index']);
 Route::post('/order/store', [App\Http\Controllers\OrdersController::class, 'store']);
+Route::post('/order/finish', [App\Http\Controllers\OrdersController::class, 'boletoPag']);
 
+// Payment
+Route::post('/pagseguro/boleto', [App\Http\Controllers\PagseguroController::class, 'boleto']);
 
 
 

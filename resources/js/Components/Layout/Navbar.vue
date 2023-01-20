@@ -124,14 +124,14 @@ export default {
   methods: {
     cart() {
       let id = window.atob(sessionStorage.getItem("cart"));
-      console.log(id);
+      // console.log(id);
       axios
         .post("/cart/products", {
           cart_id: id,
         })
         .then((response) => {
           this.Total = response.data.length;
-          console.log(response);
+          // console.log(response);
         })
         .catch((error) => {
           console.log(error);
@@ -143,7 +143,7 @@ export default {
           token: sessionStorage.getItem("token"),
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           this.login = true;
           this.name = response.data.name;
           this.loading = true;

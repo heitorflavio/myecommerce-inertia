@@ -60,6 +60,7 @@ class OrdersController extends Controller
         $total = 0;
         foreach ($cart_products as $key => $value) {
             $total += $value->price * $value->quantity;
+
         }
 
         $orders = Orders::create([
@@ -84,6 +85,7 @@ class OrdersController extends Controller
 
         foreach ($cart_products as $key => $value) {
             $this->downsInventories($value->product_id, $value->quantity);
+            $this->downCart($cart->id, $value->product_id);
             $ordersProducts = DB::table('orders_products')->insert([
                 'order_id' => $orders->id,
                 'product_id' => $value->product_id,
@@ -97,7 +99,10 @@ class OrdersController extends Controller
             ]);
         }
 
-        return response()->json($orders);
+        return response()->json([
+            'order' => $orders,
+            'customer' => $customer,
+        ], 200);
     }
 
    public function downsInventories($id, $value){
@@ -106,15 +111,29 @@ class OrdersController extends Controller
         DB::table('products')->where('id', $id)->update(['stock' => $product->stock]);
    }
 
+   public function downCart($idCart, $idProduct){  
+        DB::table('cart_products')->where('cart_id', $idCart)->where('product_id', $idProduct)->update(['status' => 2]);
+   }
+
+   
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function show(Orders $orders)
+    public function show(Request $request)
     {
-        //
+       
+    }
+
+    public function boletoPag(Request $request)
+    {
+        return Inertia::render('FinishBoletoPagseguro', [
+            'order' => $request->order,
+            'customer' => $request->customer,
+        ]);
     }
 
     /**

@@ -82,7 +82,7 @@ class CartProductsController extends Controller
      */
     public function update(Request $request)
     {
-        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->first();
+        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->where('status', 1)->first();
         $newQuantity = $check->quantity + 1;
         $check->update(['quantity' => $newQuantity]);
         return response()->json($check, 201);
@@ -96,7 +96,7 @@ class CartProductsController extends Controller
      */
     public function remove(Request $request)
     {
-        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->first();
+        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->where('status', 1)->first();
         $newQuantity = $check->quantity - 1;
         $check->update(['quantity' => $newQuantity]);
         return response()->json($check, 201);
@@ -110,7 +110,7 @@ class CartProductsController extends Controller
      */
     public function destroy(Request $request)
     {
-        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->first();
+        $check = CartProducts::where('product_id', $request->product_id)->where('cart_id', $request->cart_id)->where('status', 1)->first();
         $check->update(['status' => 0]);
         return response()->json($check, 201);
     }

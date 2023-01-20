@@ -25,35 +25,40 @@ class PagseguroController extends Controller
         $pag = Pagseguro::where('id', 1)->first();
         $token = $pag->token;
         $email = $pag->email;
-        $date = mktime(0, 0, 0, date("Y"), date("m"),  date("d") + 1);;
+        $date = date("Y-m-d");
+        $date = date('Y-m-d', strtotime($date . ' + 3 days'));
+        $total =  floatval($request->order['order']['total']) + floatval($request->order['order']['valor_frete']);
+        $document = $request->order['customer']['document'];
+        $name = $request->order['customer']['name'];
+        $email_customer = $request->order['customer']['email'];
+        // print_r("{\n\t\"reference\": \"teste\",\n\t\"firstDueDate\": \"".$date."\",\n\t\"numberOfPayments\": 1,\n\t\"periodicity\": \"monthly\",\n\t\"amount\": \"".$total."\",\n\t\"description\": \"teste\",\n\t\"customer\": {\n\t\t\"document\": {\n\t\t\t\"type\": \"CPF\",\n\t\t\t\"value\": \"".$document."\"\n\n\t\t},\n\t\t\t\"email\": \"".$email."\",\n\t\t\t\"name\": \"".$name."\",\n\t\t\t\"phone\": {\n\t\t\t\t\"areaCode\": \"38\",\n\t\t\t\t\"number\": \"999727769\"\n\t\t\t}\n\t\t\n\t\t\n\t}\n}");
+        // exit;
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://ws.pagseguro.uol.com.br/recurring-payment/boletos?email=" . $email . "&token=" . $token . "",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{\n\t\"reference\": \"teste\",\n\t\"firstDueDate\": \"".$date."\",\n\t\"numberOfPayments\": 1,\n\t\"periodicity\": \"monthly\",\n\t\"amount\": \"".$total."\",\n\t\"description\": \"teste\",\n\t\"customer\": {\n\t\t\"document\": {\n\t\t\t\"type\": \"CPF\",\n\t\t\t\"value\": \"".$document."\"\n\n\t\t},\n\t\t\t\"email\": \"".$email_customer."\",\n\t\t\t\"name\": \"".$name."\",\n\t\t\t\"phone\": {\n\t\t\t\t\"areaCode\": \"38\",\n\t\t\t\t\"number\": \"999727769\"\n\t\t\t}\n\t\t\n\t\t\n\t}\n}",
+            CURLOPT_HTTPHEADER => [
+                "Content-Type: application/json"
+            ],
+        ]);
 
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
 
+        curl_close($curl);
 
-        // $curl = curl_init();
-        // curl_setopt_array($curl, [
-        //     CURLOPT_URL => "https://ws.pagseguro.uol.com.br/recurring-payment/boletos?email=" . $email . "&token=" . $token . "",
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_ENCODING => "",
-        //     CURLOPT_MAXREDIRS => 10,
-        //     CURLOPT_TIMEOUT => 30,
-        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //     CURLOPT_CUSTOMREQUEST => "POST",
-        //     CURLOPT_POSTFIELDS => "{\n\t\"reference\": \"teste\",\n\t\"firstDueDate\": \"2022-12-20\",\n\t\"numberOfPayments\": 1,\n\t\"periodicity\": \"monthly\",\n\t\"amount\": \"10.00\",\n\t\"description\": \"teste\",\n\t\"customer\": {\n\t\t\"document\": {\n\t\t\t\"type\": \"CPF\",\n\t\t\t\"value\": \"03552036695\"\n\n\t\t},\n\t\t\t\"email\": \"keila.lelis@yahoo.com\",\n\t\t\t\"name\": \"keila lelis flavio\",\n\t\t\t\"phone\": {\n\t\t\t\t\"areaCode\": \"38\",\n\t\t\t\t\"number\": \"999727769\"\n\t\t\t}\n\t\t\n\t\t\n\t}\n}",
-        //     CURLOPT_HTTPHEADER => [
-        //         "Content-Type: application/json"
-        //     ],
-        // ]);
-
-        // $response = curl_exec($curl);
-        // $err = curl_error($curl);
-
-        // curl_close($curl);
-
-        // if ($err) {
-        //     echo "cURL Error #:" . $err;
-        // } else {
-        //     echo $response;
-        // }
+        if ($err) {
+           return response()->json($err,500);
+        } else {
+          
+           return $response;
+        }
     }
 
     /**

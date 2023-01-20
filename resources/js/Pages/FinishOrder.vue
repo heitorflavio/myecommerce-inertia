@@ -3,7 +3,7 @@
   <div id="template">
     <div id="app">
       <div>
-        <form @submit.prevent="Order()">
+        <form @submit.prevent="">
           <div class="d-flex main">
             <div class="alert alert-danger" v-if="alert">{{ alert }}</div>
             <div class="card">
@@ -336,6 +336,7 @@ import Navbar from "@/Components/Layout/Navbar.vue";
 import Footer from "@/Components/Layout/Footer.vue";
 import axios from "axios";
 import Mask from "../Plugin/MaskPrice.js";
+import { Inertia } from "@inertiajs/inertia";
 export default {
   name: "FinishOrder",
   components: {
@@ -387,7 +388,9 @@ export default {
           payment_method: this.pay,
         })
         .then((response) => {
-          
+          Inertia.post('/order/finish', {
+            order: response.data
+          })
         })
         .catch((error) => {
           console.log(error);

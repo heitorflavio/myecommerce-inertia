@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string("valor_frete", 100);
             $table->string("frete_status", 100);
             $table->string("frete", 100);
+            $table->integer("status")->default(1);
             $table->string("payment_method", 100);
             $table->string("payment_status", 100);
             $table->timestamps();
