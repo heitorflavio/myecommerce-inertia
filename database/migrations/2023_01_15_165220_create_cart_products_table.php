@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cart_id')->constrained();
             $table->foreignId('product_id')->constrained();
+            $table->string('name');
             // $table->integer('product_id');
             // $table->integer('customer_id');
             $table->longText('description');

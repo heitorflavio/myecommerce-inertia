@@ -40,19 +40,8 @@ class CustomersController extends Controller
      */
     public function store(StoreCustomersRequest $request)
     {
-        //
+        
         $pass = bcrypt($request->password);
-        // $user = DB::table('users')->create([
-        //     'name' => $request->name.' '.$request->lastname,
-        //     'email' => $request->email,
-        //     'email_verified_at' => null,
-        //     'password' => $pass,
-        //     'two_factor_secret' => null,
-        //     'two_factor_recovery_codes' => null,
-        //     'two_factor_confirmed_at' => null,
-        //     'remember_token' => null,
-        // ]);
-
         $user = DB::table('users')->insert([
             'name' => $request->name . ' ' . $request->lastname,
             'email' => $request->email,
@@ -64,7 +53,10 @@ class CustomersController extends Controller
             'remember_token' => null,
         ]);
 
+        $user = DB::table('users')->where('email', $request->email)->first();
+
         $customers = Customers::create([
+            'user_id' => $user->id,
             'name' => $request->name . ' ' . $request->lastname,
             'email' => $request->email,
             'document' => $request->document,

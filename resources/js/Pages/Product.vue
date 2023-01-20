@@ -322,10 +322,12 @@ export default {
       let r = [];
       array.forEach((element) => {
         if (element.price != null) {
-          this.alertFrete = true;
+          r.push(element);
         }
       });
-      if()
+      if(r.length == 0){
+        this.alertFrete = true;
+      }
       return r;
     },
     getFrete() {
@@ -348,6 +350,7 @@ export default {
         })
         .then((response) => {
           this.fretes = this.refreshFrete(JSON.parse(response.data));
+          console.log(response.data)
         })
         .catch((error) => {
           console.log(error);
@@ -363,6 +366,7 @@ export default {
       axios
         .post("/cart/new", {
           product_id: this.product.id,
+          name: this.product.name,
           cart_id: cartId,
           description: this.product.description,
           price: this.product.price,

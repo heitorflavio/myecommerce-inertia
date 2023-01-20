@@ -36,9 +36,9 @@
                     <!-- <p class="preco">{{ produto.price}}</p> -->
                   </div>
 
-                  <button v-if="!produto.onSale" class="button">COMPRAR</button>
-                  <div class="content" v-else>
-                    <span class="dsvg d-flex">
+                  <button v-if="!produto.onSale" class="btn btn-outline-success flex-shrink-0" id="btn-product">COMPRAR</button>
+                  <button class="content btn btn-outline-danger flex-shrink-0" id="btn-promo" v-else>
+                   
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -57,14 +57,14 @@
                           d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"
                         />
                       </svg>
-                    </span>
-                    <button class="dtime">
+                 
+                    
                       <!-- Time(produto.onSaleDate, 1000) -->
                       <span class="time">{{
                         Time(produto.onSaleDate, 1000)
                       }}</span>
-                    </button>
-                  </div>
+                    
+                  </button>
                 </div>
               </a>
             </div>
@@ -194,13 +194,26 @@ export default {
 </script>
   
   <style scoped>
-#list {
+#List {
   color: #345;
   background-image: url("../../../assets/pattern.svg");
   background-repeat: repeat;
   background-size: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+  height: 100vh;
+  margin-bottom: 50px;
 }
+#btn-product
+{
+  margin-top:  10px;
+  
+}
+#btn-promo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+} 
 .content {
   display: flex;
   flex-wrap: nowrap;
@@ -209,12 +222,12 @@ export default {
   border: 1px solid #af4c4c;
 }
 .dsvg {
-  background-color: #af4c4c;
+ 
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
-  color: white;
+  color: red;
   padding: 10px;
   text-align: center;
   text-decoration: none;
@@ -234,7 +247,6 @@ export default {
 }
 .time {
   font-size: 12px;
-  color: #dc3545;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
@@ -246,7 +258,7 @@ p {
   -webkit-box-orient: vertical;
 }
 .produtos-container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 .db {
@@ -264,26 +276,12 @@ p {
   height: 200px;
   object-fit: cover;
 }
-.button {
-  background-color: #4caf50; /* Green */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 6px;
-  /* margin: 4px 2px; */
-}
 .produtos {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
   margin: 30px;
+  align-content: center;
 }
 .description {
   font-size: 1rem;
@@ -308,6 +306,7 @@ p {
   background: #fff;
   border-radius: 4px;
   transition: all 0.2s;
+  margin: 10px 0; 
 }
 
 .produto:hover {

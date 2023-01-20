@@ -68,11 +68,11 @@ Route::post('/login', function (Request $request) {
         'email' => 'The provided credentials do not match our records.',
     ]);
 });
-Route::get('/cart', function () {
-    return Inertia::render('Cart');
-});
 
 // Cart
+Route::get('/cart', function () {return Inertia::render('Cart',[
+    'user' => Auth::user(),
+]);});
 Route::post('/cart', [App\Http\Controllers\CartsController::class, 'store']);
 Route::post('/cart/check', [App\Http\Controllers\CartsController::class, 'index']);
 Route::post('/cart/new', [App\Http\Controllers\CartProductsController ::class, 'store']);
@@ -84,6 +84,10 @@ Route::post('/cart/destroy', [App\Http\Controllers\CartProductsController ::clas
 // Frete
 Route::post('/cart/frete', [App\Http\Controllers\MelhorEnvioController::class, 'show']);
 Route::post('/product/frete', [App\Http\Controllers\MelhorEnvioController::class, 'product']);
+
+// Pedidos
+Route::post('/order', [App\Http\Controllers\OrdersController::class, 'index']);
+Route::post('/order/store', [App\Http\Controllers\OrdersController::class, 'store']);
 
 
 

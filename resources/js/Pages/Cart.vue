@@ -13,12 +13,47 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
               <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
               <div>
-                <p class="mb-0">
-                  <span class="text-muted">Sort by:</span>
-                  <a href="#!" class="text-body"
-                    >price <i class="fas fa-angle-down mt-1"></i
-                  ></a>
-                </p>
+                <span class="nav-item dropdown" data-v-87ee9136=""
+                  ><a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    data-v-87ee9136=""
+                  >
+                    Ordenar por
+                  </a>
+                  <ul
+                    class="dropdown-menu dropdown-menu-dark"
+                    data-v-87ee9136=""
+                  >
+                    <li data-v-87ee9136="">
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        data-v-87ee9136=""
+                        @click="orderByPrice()"
+                        >Preço</a
+                      >
+                    </li>
+                    <li data-v-87ee9136="">
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        data-v-87ee9136=""
+                        @click="orderByQuantity()"
+                        >Quantidade</a
+                      >
+                    </li>
+                    <!-- <li data-v-87ee9136=""></li>
+                    <li data-v-87ee9136="">
+                      <a class="dropdown-item" href="#" data-v-87ee9136=""
+                        >Something else here</a
+                      >
+                    </li> -->
+                  </ul></span
+                >
               </div>
             </div>
 
@@ -39,11 +74,11 @@
                     />
                   </div>
                   <div class="col-md-3 col-lg-3 col-xl-3">
-                    <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                    <p>
-                      <span class="text-muted">Size: </span>M
-                      <span class="text-muted">Color: </span>Grey
+                    <p class="lead fw-normal mb-2">{{ pd.name }}</p>
+                    <p id="description">
+                      {{ pd.description }}
                     </p>
+                    <span>{{ maskPrice(pd.price) }} UN</span>
                   </div>
                   <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                     <button
@@ -70,7 +105,9 @@
                     </button>
                   </div>
                   <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                    <h5 class="mb-0">{{ maskPrice(pd.price) }}</h5>
+                    <h5 class="mb-0">
+                      {{ maskPrice(pd.price * pd.quantity) }}
+                    </h5>
                   </div>
                   <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                     <a
@@ -83,50 +120,92 @@
                 </div>
               </div>
             </div>
-
-            <div class="card mb-4 frete p-4">
-              <div class="card-body p-4 d-flex flex-row">
-                <div class="form-outline">
-                  <input
-                    type="text"
-                    id="form1"
-                    class="form-control form-control-lg"
-                    placeholder="CEP"
-                    v-mask="'#####-###'"
-                    v-model="cep"
-                    maxlength="9"
-                  />
-                  <!-- <label class="form-label" for="form1">Frete</label> -->
+            <form @submit.prevent="">
+              <div class="card mb-4 frete p-3">
+                <div class="card-body d-flex flex-row">
+                  <div class="form-outline">
+                    <input
+                      type="text"
+                      id="form1"
+                      class="form-control form-control-lg"
+                      placeholder="CEP"
+                      required
+                      v-mask="'#####-###'"
+                      v-model="cep"
+                      maxlength="9"
+                    />
+                    <!-- <label class="form-label" for="form1">Frete</label> -->
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      class="btn btn-outline-warning btn-lg"
+                      @click="getFrete()"
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
-                <div>
+                <div v-if="fretes.length > 0" class="frete-temp">
+                  <div v-for="frete in fretes" :key="frete.id">
+                    <div class="">
+                      <img
+                        :src="frete.company.picture"
+                        alt="imagem frete"
+                        id="imageFrete"
+                      />
+                      <input
+                        type="radio"
+                        :id="frete.id"
+                        name="radioFrete"
+                        required
+                        @click="addFrete(frete)"
+                      />
+                      <label for=""
+                        >{{ frete.name }} - {{ maskPrice(frete.price) }}</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <span v-if="alertFrete">Frete indisponível</span>
+              </div>
+              <!-- <div class="card"  v-if="fretePrice != null">
+                <div class="card-body">
                   <button
-                    type="button"
-                    class="btn btn-outline-warning btn-lg"
-                    @click="getFrete()"
+                    type="submit"
+                    class="btn btn-warning btn-block btn-lg"
+                    @click="finish = !finish"
                   >
-                    Apply
+                    Continuar
                   </button>
                 </div>
-              </div>
-              <div v-if="fretes.length > 0" class="frete">
-                <div v-for="frete in fretes" :key="frete.id">
-                  <div class="">
-                    <img :src="frete.company.picture" alt="imagem frete" id="imageFrete">
-                    <input type="radio" :id="frete.id" name="radioFrete" @click="addFrete(frete)" />
-                    <label for="">{{ frete.name }} - {{  maskPrice(frete.price) }}</label>
+              </div> -->
+              <div class="card">
+                <div class="card-body">
+                  <button
+                    type="submit"
+                    class="btn btn-warning btn-block btn-lg"
+                    ref="finish"
+                    @click="finish()"
+                    v-if="freteSelected != null"
+                  >
+                    Proceed to Pay
+                  </button>
+                  <button
+                    v-else
+                    type="submit"
+                    class="btn btn-warning btn-block btn-lg"
+                  >
+                    Proceed to Pay
+                  </button>
+                  <div id="total">
+                    <h7>Total Produtos: {{ maskPrice(Total) }}</h7>
+                    <h7>Frete: {{ maskPrice(fretePrice) }}</h7>
+                    <h4>Total: {{ maskPrice(sum(Total, fretePrice)) }}</h4>
                   </div>
                 </div>
               </div>
-              <span v-if="alertFrete">Frete indisponível</span>
-            </div>
-
-            <div class="card">
-              <div class="card-body">
-                <button type="button" class="btn btn-warning btn-block btn-lg">
-                  Proceed to Pay
-                </button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -142,17 +221,21 @@ import Footer from "../Components/Layout/Footer.vue";
 import Loading from "../Components/Layout/LoadingTime.vue";
 import Mask from "../Plugin/MaskPrice.js";
 import axios from "axios";
-import {mask} from 'vue-the-mask'
+import { mask } from "vue-the-mask";
+import { Inertia } from "@inertiajs/inertia";
 
 export default {
   name: "Cart",
   directives: {
-    mask
+    mask,
   },
   props: {
     product: {
       type: Array,
       required: true,
+    },
+    user: {
+      type: Object,
     },
   },
   components: {
@@ -166,13 +249,63 @@ export default {
       Time: true,
       cep: "",
       fretes: [],
-      freteSelected: {},
+      freteSelected: null,
       alertFrete: false,
+      Total: 0,
+      fretePrice: 0,
     };
   },
   methods: {
+    finish() {
+      if (this.user) {
+        console.log("logado");
+        Inertia
+          .post("/order", {
+            cep: this.cep,
+            frete: this.freteSelected,
+            products: this.products,
+            user: this.user,
+            // total: this.Total,
+            // fretePrice: this.fretePrice,
+          })
+          .then((res) => {
+            console.log(res);
+          });
+      } else {
+        console.log("nao logado");
+        window.location.href = "/login";
+      }
+    },
+    orderByQuantity() {
+      this.products.sort((a, b) => {
+        return a.quantity - b.quantity;
+      });
+    },
+    orderByPrice() {
+      this.products.sort((a, b) => {
+        return a.price - b.price;
+      });
+    },
+    sum(a, b) {
+      a = parseFloat(a);
+      b = parseFloat(b);
+      return a + b;
+    },
+    finishRedirect() {
+      if (this.freteSelected != null) {
+        // console.log("finish")
+
+        // this.totalwithFrete = this.Total + this.freteSelected.price;
+        this.finish = false;
+      }
+    },
     addFrete(Object) {
+      this.freteSelected = "";
+      // this.products.forEach((element) => {
+      //     this.Total += element.price * element.quantity;
+      //   });
       this.freteSelected = Object;
+      this.fretePrice = Object.price;
     },
     refreshFrete(array) {
       let r = [];
@@ -181,7 +314,7 @@ export default {
           r.push(element);
         }
       });
-      if(r.length == 0){
+      if (r.length == 0) {
         this.alertFrete = true;
       }
       return r;
@@ -189,7 +322,7 @@ export default {
     getFrete() {
       this.fretes = [];
       let products = [];
-      console.log(this.product)
+      // console.log(products)
       this.products.forEach((element) => {
         products.push(
           JSON.stringify({
@@ -203,36 +336,46 @@ export default {
           })
         );
       });
+      // console.log(products);
       axios
         .post("/cart/frete", {
           cep: this.cep,
           products: products,
         })
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.fretes = this.refreshFrete(JSON.parse(response.data));
+console.log(this.fretes)
         })
         .catch((error) => {
           console.log(error);
         });
     },
     maskPrice(price) {
-      price = parseInt(price);
+      let type = typeof price;
+      if (type == "string") {
+        price = parseFloat(price);
+      }
       return Mask.price(price);
     },
     cart() {
+      this.Time = true;
+      this.products = [];
       let id = window.atob(sessionStorage.getItem("cart"));
-      console.log(id);
+
       axios
         .post("/cart/products", {
           cart_id: id,
         })
         .then((response) => {
           this.products = response.data;
+
+          if (this.cep != "") {
+            this.getFrete();
+          }
           setTimeout(() => {
             this.Time = false;
           }, 1000);
-          // console.log(response);
         })
         .catch((error) => {
           console.log(error);
@@ -251,7 +394,8 @@ export default {
           // this.msg = "Produto adicionado ao carrinho";
           // this.CSStext = "alert alert-success";
           this.cart();
-
+          console.log(response.data);
+          // this.getFrete();
           // console.log(response.data)
 
           // this.$emit("updateCart  this.total = response.data.total;", this.total);
@@ -317,7 +461,16 @@ export default {
   watch: {
     freteSelected(n) {
       this.freteSelected = n;
-    }
+    },
+    products(n) {
+      this.products.forEach((element) => {
+        this.Total += element.price * element.quantity;
+      });
+      // console.log(this.Total)
+    },
+    // Total(n) {
+    //   this.Total = n;
+    // },
   },
   created() {
     this.cart();
@@ -331,14 +484,32 @@ export default {
 </script>
 
 <style scoped>
-#imageFrete{
-  width: 60px
+#total {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+#description {
+  width: 200px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#imageFrete {
+  width: 60px;
 }
 .frete {
   display: grid;
-  grid-template-columns: 1fr 1fr ;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  
+}
+.frete-temp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 #app {
   margin-top: 50px;
@@ -354,5 +525,28 @@ export default {
 }
 #footer {
   margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  #imageFrete {
+    width: 60px;
+  }
+  .frete {
+    /* display: grid;
+  grid-template-rows: 1fr 1fr;
+  align-items: center; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .frete-temp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  #form1 {
+    width: 200px;
+  }
 }
 </style>

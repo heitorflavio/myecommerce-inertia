@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders_products', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders');
-            $table->integer('product_id');
-            // $table->integer('customer_id');
-            $table->string('description');
-            $table->integer('quantity');
-            $table->float('price');
-            $table->string('image');
+            $table->string('name', 100);
             $table->integer('status')->default(1);
             $table->timestamps();
         });
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders_products');
+        Schema::dropIfExists('payments');
     }
 };

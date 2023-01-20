@@ -1,8 +1,10 @@
 export default {
-    price(price) {
+  price(price) {
+    
         return price.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
+          
         });
       },
 }

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateMelhorEnvioRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+
 class MelhorEnvioController extends Controller
 {
     /**
@@ -17,6 +18,7 @@ class MelhorEnvioController extends Controller
      */
     public function index()
     {
+      
     }
 
     /**
