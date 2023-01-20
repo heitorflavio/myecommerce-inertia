@@ -165,7 +165,7 @@
                 justify-content-center
               "
             >
-              <button type="button" v-for="py in payments" :key="py.id"  @click="pay = py.id">
+              <button type="button" v-for="py in payments" :key="py.id"  @click="pay = py.id" class="btn btn-outline-success flex-shrink-0">
                 {{ py.name }}
               </button>
             </div>
@@ -182,7 +182,7 @@
               <div class="row d-flex align-items-center justify-content-center">
                 <div class="d-flex align-items-center justify-content-center">
                   <h4>
-                    <b>Total: {{ isTotal }}</b>
+                    <b>Total: {{ maskPrice(isTotal) }}</b>
                   </h4>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">

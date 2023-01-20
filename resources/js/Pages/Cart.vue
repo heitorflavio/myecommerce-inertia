@@ -359,6 +359,7 @@ console.log(this.fretes)
       return Mask.price(price);
     },
     cart() {
+      this.Total = 0;
       this.Time = true;
       this.products = [];
       let id = window.atob(sessionStorage.getItem("cart"));

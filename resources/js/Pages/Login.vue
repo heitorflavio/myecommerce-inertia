@@ -151,7 +151,9 @@ export default {
     cartCheck() {
       if(localStorage.getItem('_cart') != null){
         this.form.cart = localStorage.getItem('_cart');
-      }
+        sessionStorage.removeItem('cart');
+        localStorage.removeItem('_cart');
+      } 
     }
   },
   created() {

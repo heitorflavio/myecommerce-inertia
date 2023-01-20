@@ -56,8 +56,9 @@
                           class="form-control form-control-user"
                           type="text"
                           id="exampleInputDocument"
-                          placeholder="CPF/CNPJ"
+                          placeholder="CPF"
                           name="document"
+                          maxlength="11"
                           v-model="form.document"
                           required
                         />
@@ -72,6 +73,7 @@
                           placeholder="Phone"
                           name="phone"
                           v-model="form.phone"
+                          v-mask="'(##) #####-####'"
                           required
                         />
                       </div>
@@ -83,6 +85,7 @@
                           placeholder="Cep"
                           name="cep"
                           v-model="zip"
+                          v-mask="'#####-###'"
                           required
                         />
                       </div>
@@ -246,9 +249,13 @@
 
 <script>
 import { Inertia } from "@inertiajs/inertia";
+import { mask } from "vue-the-mask";
 import axios from "axios";
 export default {
   name: "Register",
+  directives: {
+    mask,
+  },
   data() {
     return {
       form: Inertia.form({
@@ -310,8 +317,10 @@ export default {
   },
   methods: {
     cep() {
+      this.form.zip = this.form.zip.replace("-", "");
+      console.log(this.form.zip)
       axios
-        .get(`https://viacep.com.br/ws/${this.form.cep}/json`)
+        .get(`https://viacep.com.br/ws/${this.form.zip}/json`)
         .then((response) => {
           console.log(response.data);
           this.class_cep = "form-control form-control-user is-valid";
@@ -351,7 +360,7 @@ export default {
   watch: {
     zip: function (val) {
       this.form.zip = val;
-      if (val.length != 8) {
+      if (val.length != 9) {
         this.class_cep = "form-control form-control-user is-invalid";
       } else {
         this.class_cep = "form-control form-control-user is-valid";
