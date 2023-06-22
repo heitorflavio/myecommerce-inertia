@@ -62,7 +62,7 @@ Route::post('/login', function (Request $request) {
             $userCheck = DB::table('customers')->where('email', $request->email)->update(['cart' => request()->cart]);
         }
         $request->session()->regenerate();
-        return Inertia::location('/');
+        return Inertia::location('/', ['user' => Auth::user()]);
     }
     return back()->withErrors([
         'email' => 'The provided credentials do not match our records.',

@@ -10,13 +10,8 @@
         </a>
         <form @submit.prevent="form.post('/')" method="POST">
           <div class="input-group">
-            <input
-              class="form-control form-control-sidebar"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              v-model="form.search"
-            />
+            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search"
+              v-model="form.search" />
             <div class="input-group-append">
               <button type="submit" class="btn btn-sidebar">
                 <i class="fas fa-search"></i>
@@ -32,49 +27,43 @@
             </a>
           </div>
 
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasDarkNavbar"
-            aria-controls="offcanvasDarkNavbar"
-          >
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+            aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
           </button>
         </div>
-        <div
-          class="offcanvas offcanvas-end text-bg-dark"
-          tabindex="-1"
-          id="offcanvasDarkNavbar"
-          aria-labelledby="offcanvasDarkNavbarLabel"
-        >
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+          aria-labelledby="offcanvasDarkNavbarLabel">
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
               Menu
             </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+              aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+              <li class="nav-item" v-if="!user">
+                <a class="nav-link" href="/login">Login/Register</a>
+              </li>
+              <li class="nav-item dropdown" v-else>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  {{ user.name }}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item" href="#">Perfil</a></li>
+                  <li><a class="dropdown-item" href="#">Wishlist</a></li>
+                  <li><a class="dropdown-item" href="#">Pedidos</a></li>
+                </ul>
+              </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/login">Login/Register</a>
-              </li>
               <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
                   Categorias
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark">
@@ -95,12 +84,13 @@
   </div>
 </template>
   
-  <script>
+<script>
 import axios from "axios";
 
 // import axios from 'axios';
 export default {
   name: "TheHeader",
+
   components: {
     // Sidebar,
   },
@@ -117,10 +107,10 @@ export default {
     };
   },
 
-  // props: {
-  //   total: Number,
-  //   user: String,
-  // },
+  props: {
+    // total: Number,
+    user: Object,
+  },
   methods: {
     cart() {
       let id = window.atob(sessionStorage.getItem("cart"));
@@ -162,43 +152,51 @@ export default {
   },
   mounted() {
     // this.me();
+    console.log(this.user)
     this.cart();
     // console.log(this.user);
   },
   watch: {
     Total(n) {
       this.Total = n
+    }
   }
-}
 };
 </script>
   
-  <style scoped>
+<style scoped>
 @media (max-width: 500px) {
   .logo {
     display: none;
   }
+
   .logo2 {
     display: flex;
   }
+
   .logo2 img {
     width: 60px;
     height: 60px;
   }
+
   .input-group {
     width: 200px;
   }
+
   .container-fluid {
     padding: 0;
   }
+
   #cart {
     margin-right: 15px;
   }
 }
+
 @media (min-width: 500px) {
   .logo2 {
     display: none;
   }
+
   .logo {
     padding: 10px 0;
   }
@@ -206,9 +204,11 @@ export default {
   .logo img {
     width: 90px;
   }
+
   .input-group {
     width: 400px;
   }
+
   #cart {
     margin-right: 15px;
   }
@@ -218,10 +218,12 @@ export default {
   background-color: #fff;
   border-radius: 0 5px 5px 0;
 }
+
 #PreNav {
   background-color: #007bff;
   height: 3px;
 }
+
 #PosNav {
   /* background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x !important; */
   height: 50px;
